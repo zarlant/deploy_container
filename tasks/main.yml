@@ -1,0 +1,16 @@
+---
+# tasks file for deploy_container
+- name: Pull Container
+  docker_image:
+    name: "{{ docker_registry }}/{{ container_name }}"
+    tag: "{{ container_tag }}"
+
+- name: Start Container
+  docker_container:
+    name: "{{ application_name }}"
+    image: "{{ docker_registry }}/{{container_name}}:{{container_tag}}"
+    log_driver: "{{ log_driver }}"
+    labels: "{{ container_labels }}"
+    state: started
+    restart: yes
+    published_ports: ALL

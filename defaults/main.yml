@@ -1,0 +1,5 @@
+---
+# defaults file for deploy_container
+docker_registry: artifactory.cobalt.com
+container_tag: latest
+log_driver: journald
