@@ -1,5 +1,8 @@
 ---
 # tasks file for deploy_container
+- name: Ensure Docker-py installed
+  pip: name=docker-py state=latest
+
 - name: Pull Container
   docker_image:
     name: "{{ docker_registry }}/{{ container_name }}"
