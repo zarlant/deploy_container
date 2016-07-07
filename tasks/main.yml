@@ -5,19 +5,21 @@
 
 - name: Pull Container
   docker_image:
-    name: "{{ docker_registry | ends_in_slash }}{{ container_name }}"
-    tag: "{{ container_tag }}"
+    name: "{{ item.docker_registry | ends_in_slash }}{{ item.container_name }}"
+    tag: "{{ item.container_tag }}"
+  with_items: "{{ containers }}"
 
 - name: Start Container
   docker_container:
-    name: "{{ application_name }}"
-    image: "{{ docker_registry | ends_in_slash }}{{container_name}}:{{container_tag}}"
-    log_driver: "{{ log_driver | default(omit) }}"
-    labels: "{{ container_labels | default(omit) }}"
-    network_mode: "{{ container_network_mode | default('bridge') }}"
-    volumes: "{{ container_volumes | default(omit) }}"
-    command: "{{ container_command | default(omit) }}"
-    env: "{{ container_env | default(omit) }}"
+    name: "{{ item.application_name }}"
+    image: "{{ item.docker_registry | ends_in_slash }}{{item.container_name}}:{{item.container_tag}}"
+    log_driver: "{{ item.log_driver | default(omit) }}"
+    labels: "{{ item.container_labels | default(omit) }}"
+    network_mode: "{{ item.container_network_mode | default('bridge') }}"
+    volumes: "{{ item.container_volumes | default(omit) }}"
+    command: "{{ item.container_command | default(omit) }}"
+    env: "{{ item.container_env | default(omit) }}"
     state: started
     restart: yes
     published_ports: all
+  with_items: "{{ containers }}"
