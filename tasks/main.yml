@@ -17,6 +17,7 @@
     network_mode: "{{ container_network_mode | default('bridge') }}"
     volumes: "{{ container_volumes | default(omit) }}"
     command: "{{ container_command | default(omit) }}"
+    env: "{{ container_env | default(omit) }}"
     state: started
     restart: yes
     published_ports: all
