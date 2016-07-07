@@ -5,13 +5,13 @@
 
 - name: Pull Container
   docker_image:
-    name: "{{ docker_registry }}/{{ container_name }}"
+    name: "{{ docker_registry | ends_in_slash }}{{ container_name }}"
     tag: "{{ container_tag }}"
 
 - name: Start Container
   docker_container:
     name: "{{ application_name }}"
-    image: "{{ docker_registry }}/{{container_name}}:{{container_tag}}"
+    image: "{{ docker_registry | ends_in_slash }}{{container_name}}:{{container_tag}}"
     log_driver: "{{ log_driver | default(omit) }}"
     labels: "{{ container_labels | default(omit) }}"
     network_mode: "{{ container_network_mode | default('bridge') }}"
