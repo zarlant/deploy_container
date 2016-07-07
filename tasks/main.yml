@@ -19,4 +19,4 @@
     command: "{{ container_command | default(omit) }}"
     state: started
     restart: yes
-    published_ports: ALL
+    published_ports: all
