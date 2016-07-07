@@ -9,8 +9,11 @@
   docker_container:
     name: "{{ application_name }}"
     image: "{{ docker_registry }}/{{container_name}}:{{container_tag}}"
-    log_driver: "{{ log_driver }}"
-    labels: "{{ container_labels }}"
+    log_driver: "{{ log_driver | default(omit) }}"
+    labels: "{{ container_labels | default(omit) }}"
+    network_mode: "{{ container_network_mode | default('bridge') }}"
+    volumes: "{{ container_volumes | default(omit) }}"
+    command: "{{ container_command | default(omit) }}"
     state: started
     restart: yes
     published_ports: ALL
