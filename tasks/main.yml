@@ -9,7 +9,7 @@
     tag: "{{ item.container_tag }}"
   with_items: "{{ containers }}"
 
-- name: Start Container
+- name: Container Action
   docker_container:
     name: "{{ item.application_name }}"
     image: "{{ item.docker_registry | ends_in_slash }}{{item.container_name}}:{{item.container_tag}}"
@@ -19,7 +19,7 @@
     volumes: "{{ item.container_volumes | default(omit) }}"
     command: "{{ item.container_command | default(omit) }}"
     env: "{{ item.container_env | default(omit) }}"
-    state: started
-    restart: yes
-    published_ports: all
+    state: "{{ item.container_state | default('started') }}"
+    restart: "{{ item.container_restart | default('no') }}"
+    published_ports: "{{ item.container.publish_ports | default('all) }}"
   with_items: "{{ containers }}"
