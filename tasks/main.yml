@@ -1,5 +1,13 @@
 ---
 # tasks file for deploy_container
+- name: Ensure pip installed with yum
+  yum: name=python-pip state=latest
+  when: ansible_pkg_mgr == "yum"
+
+- name: Ensure pip installed with apt
+  apt: name=python-pip state=latest
+  when: ansible_pkg_mgr == "apt"
+
 - name: Ensure Docker-py installed
   pip: name=docker-py state=latest
 
