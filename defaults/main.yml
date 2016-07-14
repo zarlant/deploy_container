@@ -1,5 +1,5 @@
 ---
 # defaults file for deploy_container
-docker_registry: artifactory.cobalt.com
+docker_registry: docker.customer.com
 container_tag: latest
 log_driver: journald
