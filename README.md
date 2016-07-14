@@ -28,6 +28,41 @@ Example Playbook
 	  vars:
 	    - containers: "{{ default_containers | merge_lists(other_containers) }}" 
 
+Example Variables
+-----------------
+
+Example variables file to ensure consul and registrator are running on the host:
+
+	consul_user: 100
+	consul_group: docker
+	congo_containers:
+	default_containers:
+	  - docker_registry: ""
+	    container_name: consul
+	    application_name: consul
+	    container_tag: latest
+	    log_driver: "journald"
+	    container_network_mode: host
+	    container_volumes:
+	      - "{{ consul_data_directory }}:{{ consul_data_directory }}:rw"
+	      - "{{ consul_server_config_path }}:/consul/config"
+	    container_command:
+	      - "agent"
+	      - "-config-dir=/consul/config"
+	    container_env:
+	      CONSUL_LOCAL_CONFIG: "{\"skip_leave_on_interrupt\": true}"
+	  - docker_registry: ""
+	    container_name: gliderlabs/registrator
+	    application_name: registrator
+	    container_tag: latest
+	    log_driver: "journald"
+	    container_network_mode: host
+	    container_volumes: /var/run/docker.sock:/tmp/docker.sock
+	    container_command:
+	      - "-ip={{ansible_default_ipv4.address}}"
+	      - "consul://{{ansible_default_ipv4.address}}:8500"
+
+
 License
 -------
 
